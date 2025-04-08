@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome2Ottawa</title>
+  <style>
+    :root {
+      --primary-color: #EB0C26;
+      --bg-light: #f5f5f5;
+      --bg-white: #ffffff;
+      --text-dark: #333;
+      --text-muted: #666;
+      --border-color: #ddd;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+    }
+    
+    .app-container {
+      max-width: 375px;
+      height: 667px;
+      margin: 20px auto;
+      border: 10px solid #333;
+      border-radius: 30px;
+      overflow: hidden;
+      position: relative;
+      background-color: var(--bg-white);
+    }
+    
+    .status-bar {
+      height: 20px;
+      background-color: #f8f8f8;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    
+    .screen {
+      height: calc(100% - 20px);
+      overflow-y: auto;
+      display: none;
+    }
+    
+    .header {
+      padding: 15px;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .header-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .back-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    .content {
+      padding: 20px;
+    }
+    
+    .splash-screen {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg'); /* Replace with your image URL */
+        background-size: contain;
+        background-position: center;
+        position: absolute;
+        width: 100%;
+        z-index: 100;
+        transition: opacity 0.5s;
+        }
+
+    .splash-overlay {
+        background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent overlay */
+        width: 100%;
+        height: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        }
+
+    .splash-logo {
+        width: 150px;
+        height: 150px;
+        background-color: var(--primary-color);
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    .splash-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 10px;
+        }
+
+    .splash-subtitle {
+        font-size: 14px;
+        color: white;
+        text-align: center;
+        padding: 0 40px;
+        }
+        
+    #welcomeScreen {
+        background-image: url('https://cdn.dribbble.com/userupload/19992454/file/original-1cbe1fb5050d61ef1596dc84562840d1.gif'); /* Replace with your image URL */
+        background-size: contain;
+        background-position: bottom center;
+        background-repeat: no-repeat;
+        display: none; /* Hidden by default */
+        height: calc(100% - 20px);
+        overflow-y: auto;
+        position: relative;
+        }
+
+    #welcomeScreen .content {
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px;
+        text-align: center;
+        }
+
+    #welcomeScreen .welcome-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: white;
+        }
+
+    .welcomeScreen .welcome-subtitle {
+        font-size: 16px;
+        color: white;
+        margin-bottom: 20px;
+        }
+    
+    .button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 15px 0;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+        }
+    
+    .button-secondary {
+      background-color: #f8f8f8;
+      color: var(--text-dark);
+      border: 1px solid var(--border-color);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    .form-input, .form-select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    
+    .form-select {
+      background-color: white;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 12px;
+      font-size: 12px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+    
+    .nav-bar {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      background-color: white;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    
+    .nav-item.active {
+      color: var(--primary-color);
+    }
+    
+    .nav-icon {
+      font-size: 24px;
+      margin-bottom: 2px;
+    }
+    
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .feature-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+    }
+    
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #f0f0f0;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 20px;
+      color: var(--primary-color);
+    }
+    
+    .feature-title {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    .feature-description {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+    
+    .plan-section {
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+    
+    .plan-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .plan-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .plan-item-status {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 12px;
+    }
+    
+    .plan-item-status.completed {
+      background-color: var(--primary-color);
+    }
+    
+    .plan-item-status.pending {
+      background-color: #f0f0f0;
+      color: var(--text-muted);
+    }
+    
+    .plan-item-title {
+      font-weight: 500;
+    }
+    
+    .plan-item-date {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    
+    .property-card {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      background-color: white;
+      cursor: pointer;
+    }
+    
+    .property-image {
+      height: 150px;
+      width: 100%;
+      object-fit: cover;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #999;
+    }
+    
+    .property-details {
+      padding: 15px;
+    }
+    
+    .property-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .property-address {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    
+    .property-price {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .filter-section {
+      background-color: #f8f8f8;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    
+    .filter-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .range-slider {
+      width: 100%;
+      margin: 10px 0;
+    }
+    
+    .slider-values {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .ad-banner {
+      display: flex;
+      align-items: center;
+      background-color: #f8f8f8;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px;
+      margin: 20px 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      grid-column: span 2; /* Makes the ad banner span two columns */
+    }
+
+    .ad-image {
+      width: 100px;
+      height: 60px;
+      border-radius: 4px;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+
+    .ad-text {
+      flex: 1;
+    }
+
+    .ad-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+
+    .ad-description {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .chat-container {
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      height: calc(100% - 50px);
+      overflow-y: auto;
+    }
+
+    .chat-list {
+      padding: 15px;
+    }
+
+    .chat-item {
+      background-color: white;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .chat-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .chat-description {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .chat-button {
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="status-bar">
+      <span>10:15</span>
+      <span>📶 96%</span>
+    </div>
+    
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-overlay">
+          <div class="splash-logo">
+            <div style="color: white; font-size: 40px; font-weight: bold;">W2O</div>
+          </div>
+          <div class="splash-title">Welcome2Ottawa</div>
+          <div class="splash-subtitle">From Overwhelmed to Empowered — Your only Guide to Canadian Integration</div>
+        </div>
+      </div>
+    
+    <!-- Welcome Screen -->
+    <div class="screen" id="welcomeScreen">
+        <div class="header">
+            <div class="header-title">Welcome2Ottawa</div>
+            <span>🇨🇦</span>        
+      </div>
+      <div class="content">
+        <div class="welcome-header">
+          <div class="welcome-title">Bienvenue à Ottawa!</div>
+          <div class="welcome-subtitle">Let's get started with your personalized integration plan</div>
+        </div>
+        <button class="button" onclick="showScreen('personalInfoScreen')">Get Started</button>
+        <button class="button button-secondary" onclick="showScreen('dashboardScreen')">I already have an account</button>
+      </div>
+    </div>
+    
+    <!-- Personal Info Screen -->
+    <div class="screen" id="personalInfoScreen">
+      <div class="header">
+        <button class="back-button" onclick="showScreen('welcomeScreen')">←</button>
+        <div class="header-title">Your Information</div>
+        <span></span>
+      </div>
+      <div class="content">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" placeholder="Enter your full name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">DoB</label>
+          <input type="date" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Temporary Resident Status</label>
+          <select class="form-select">
+            <option>International Student</option>
+            <option>Temporary Worker</option>
+            <option>Visitor</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Arrival Date</label>
+          <input type="date" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Primary Needs</label>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+            <span class="badge">Housing</span>
+            <span class="badge">Job</span>
+            <span class="badge">Banking</span>
+            <span class="badge">Healthcare</span>
+            <span class="badge">Daycare</span>
+            <span class="badge">Transportation</span>
+          </div>
+        </div>
+        <button class="button" onclick="showScreen('dashboardScreen')">Create My Plan</button>
+      </div>
+    </div>
+    
+    <!-- Dashboard Screen -->
+    <div class="screen" id="dashboardScreen">
+      <div class="header">
+        <span></span>
+        <div class="header-title">My Dashboard</div>
+        <span>👤</span>
+      </div>
+      <div class="content">
+        <div class="plan-section">
+          <div class="plan-title">Your Integration Plan</div>
+          <div class="plan-item">
+            <div class="plan-item-status completed">✓</div>
+            <div class="plan-item-title">Complete personal profile</div>
+            <div class="plan-item-date">Today</div>
+          </div>
+          <div class="plan-item">
+            <div class="plan-item-status completed">✓</div>
+            <div class="plan-item-title">Find housing</div>
+            <div class="plan-item-date">Priority</div>
+          </div>
+          <div class="plan-item">
+            <div class="plan-item-status completed">✓</div>
+            <div class="plan-item-title">[5001] Hackathon</div>
+            <div class="plan-item-date">Apr 7</div>
+          </div>
+          <div class="plan-item">
+            <div class="plan-item-status pending">4</div>
+            <div class="plan-item-title">[5002] VCP Digital assets</div>
+            <div class="plan-item-date">Apr 8</div>
+          </div>
+          <div class="plan-item">
+            <div class="plan-item-status pending">5</div>
+            <div class="plan-item-title">Get UHIP at Carleton U</div>
+            <div class="plan-item-date">Apr 15</div>
+          </div>
+        </div>
+        
+        <div class="feature-grid">
+          <div class="feature-card" onclick="showScreen('housingScreen')">
+            <div class="feature-icon">🏠</div>
+            <div class="feature-title">Housing</div>
+            <div class="feature-description">Find your perfect home</div>
+          </div>
+          <div class="feature-card" onclick="showScreen('daycareScreen')">
+            <div class="feature-icon">👶</div> 
+            <div class="feature-title">Daycare</div>
+            <div class="feature-description">Childcare services</div>
+          </div>
+          <a href="https://www.jobbank.gc.ca/" target="_blank" class="feature-card">
+            <div class="feature-icon">💼</div>
+            <div class="feature-title">Jobs</div>
+            <div class="feature-description">Discover opportunities</div>
+          </a>
+          <a href="https://www.canada.ca/en/health-canada.html" target="_blank" class="feature-card">
+            <div class="feature-icon">🏥</div>
+            <div class="feature-title">Healthcare</div>
+            <div class="feature-description">Medical resources</div>
+          </a>
+          <a href="https://www.walmart.ca/en/browse/grocery/10019?facet=fulfillment_method%3APickup%7C%7Cspecial_offers%3ASave&icid=dept_flyout_grocery_save_now_83711_KKYBV0UQSE/" target="_blank" class="feature-card">
+            <div class="feature-icon">🛒</div>
+            <div class="feature-title">Shopping</div>
+            <div class="feature-description">Find stores and deals</div>
+          </a>
+          <a href="https://www.eventbrite.ca/" target="_blank" class="feature-card">
+            <div class="feature-icon">🎭</div>
+            <div class="feature-title">Entertainment</div>
+            <div class="feature-description">Events and activities</div>
+          </a>
+          <div class="feature-card">
+            <div class="feature-icon">❓</div>
+            <div class="feature-title">Other</div>
+            <div class="feature-description">Explore more</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📞 </div>
+            <div class="feature-title">Partnership</div>
+            <div class="feature-description">Book ads slot now</div>
+          </div>
+          <a href="https://graduate.carleton.ca/cu-programs/technology-innovation-management-masters/" target="_blank" class="ad-banner">
+            <img src="https://pbs.twimg.com/profile_images/1623720146069061632/iVmW4gbB_400x400.jpg" alt="Advertisement" class="ad-image">
+            <div class="ad-text">
+              <div class="ad-title">Carleton University</div>
+              <div class="ad-description">Join Carleton U today</div>
+            </div>    
+        </a>
+        <a href="https://bpb-ca-c1.wpmucdn.com/myriverside.sd43.bc.ca/dist/1/1936/files/2017/01/image-29k964e.jpg" target="_blank" class="ad-banner">
+            <img src="https://cdn1.vectorstock.com/i/1000x1000/49/40/modern-abstract-offer-discount-advertising-banner-vector-14514940.jpg" alt="Advertisement" class="ad-image">
+            <div class="ad-text">
+              <div class="ad-title">Sponsored by W2O</div>
+              <div class="ad-description">Check out the latest offers!</div>
+            </div>
+        </a>
+        </div>
+      </div>
+      
+      <!-- Chat button -->
+      <div class="chat-button" id="chatButton">💬</div>
+      
+      <div class="nav-bar">
+        <div class="nav-item active" onclick="activateNavItem(this, 'dashboardScreen')">
+          <div class="nav-icon">🏠</div>
+          <div>Home</div>
+        </div>
+        <div class="nav-item" onclick="activateNavItem(this, 'dashboardScreen')">
+          <div class="nav-icon">📋</div>
+          <div>Plan</div>
+        </div>
+        <div class="nav-item" onclick="activateNavItem(this, null)">
+          <div class="nav-icon">🔍</div>
+          <div>Explore</div>
+        </div>
+        <div class="nav-item" onclick="activateNavItem(this, 'chatbotScreen')">
+          <div class="nav-icon">🤖</div>
+          <div>Chatbot</div>
+        </div>
+        <div class="nav-item" onclick="activateNavItem(this, 'personalInfoScreen')">
+          <div class="nav-icon">👤</div>
+          <div>Profile</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Housing Screen -->
+    <div class="screen" id="housingScreen">
+      <div class="header">
+        <button class="back-button" onclick="showScreen('dashboardScreen')">←</button>
+        <div class="header-title">Housing</div>
+        <span>🔍</span>
+      </div>
+      <div class="content">
+        <div class="filter-section">
+          <div class="filter-title">Filter Options</div>
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <select class="form-select">
+              <option>Alta Vista</option>
+              <option>Barrhaven</option>
+              <option>Downtown Ottawa</option>
+              <option>Glebe</option>
+              <option>Greenboro</option>
+              <option>Kanata</option>
+              <option>Nepean</option>
+              <option>Orleans</option>
+              <option>Sandy Hill</option>
+              <option>South Keys</option>
+              <option>Vanier</option>
+              <option>Westboro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Budget (CAD/month)</label>
+            <input type="range" min="500" max="3000" value="1000" value="2000" class="range-slider">
+            <div class="slider-values">
+              <span>$500</span>
+              <span>$1000</span>
+              <span>$2000</span>
+              <span>$3000</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Type</label>
+            <select class="form-select">
+              <option>All Types</option>
+              <option>1-Bedroom Apartment</option>
+              <option>2-Bedroom Apartment</option>
+              <option>Bachelor/Studio Apartment</option>
+              <option>Basement</option>
+              <option>House Share</option>
+              <option>Studio</option>
+            </select>
+          </div>
+          <button class="button">Apply Filters</button>
+        </div>
+        
+        <div class="property-card">
+          <img src="https://www.thehighlands.org/sites/default/files/styles/hero/public/one-bedroom-3d.png?itok=1Y5yuPSu" class="property-image">
+          <div class="property-details">
+            <div class="property-title">Modern 1BR Apartment</div>
+            <div class="property-address">123 Bank Street, Downtown Ottawa</div>
+            <div class="property-price">$1,450/month</div>
+          </div>
+        </div>
+        
+        <div class="property-card">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/389081976.jpg?k=dd7bc905c43f619d626ff0927d62a93c17227259820f760719692852ceef6724&o=&hp=1" class="property-image">
+          <div class="property-details">
+            <div class="property-title">Cozy Studio near University</div>
+            <div class="property-address">456 Laurier Avenue, Downtown Ottawa</div>
+            <div class="property-price">$1,200/month</div>
+          </div>
+        </div>
+        
+        <div class="property-card">
+          <img src="https://www.home-designing.com/wp-content/uploads/2014/06/Large-2-Bedroom-Apartment-Plan.jpg" class="property-image">
+          <div class="property-details">
+            <div class="property-title">Spacious 2BR with Parking</div>
+            <div class="property-address">789 Rideau Street, Sandy Hill</div>
+            <div class="property-price">$1,800/month</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Chat button -->
+      <div class="chat-button" id="chatButton2">💬</div>
+      
+      <div class="nav-bar">
+        <div class="nav-item" onclick="activateNavItem(this, 'dashboardScreen')">
+          <div class="nav-icon">🏠</div>
+          <div>Home</div>
+        </div>
+        <div class="nav-item" onclick="activateNavItem(this, 'dashboardScreen')">
+          <div class="nav-icon">📋</div>
+          <div>Plan</div>
+        </div>
+        <div class="nav-item active" onclick="activateNavItem(this, null)">
+          <div class="nav-icon">🔍</div>
+          <div>Explore</div>
+        </div>
+        <div class="nav-item" onclick="activateNavItem(this, 'chatbotScreen')">
+          <div class="nav-icon">🤖</div>
+          <div>Chatbot</div>
+        </div>
+        <div class="nav-item" onclick="activateNavItem(this, 'personalInfoScreen')">
+          <div class="nav-icon">👤</div>
+          <div>Profile</div>
+        </div>
+      </div>
+    </div>
+    
+<!-- Daycare Screen -->
+<div class="screen" id="daycareScreen">
+    <div class="header">
+      <button class="back-button" onclick="showScreen('dashboardScreen')">←</button>
+      <div class="header-title">Daycare</div>
+      <span>👶</span>
+    </div>
+    <div class="content">
+      <div class="filter-section">
+        <div class="filter-title">Filter Options</div>
+        <div class="form-group">
+          <label class="form-label">Location</label>
+          <select class="form-select">
+            <option>Alta Vista</option>
+            <option>Barrhaven</option>
+            <option>Downtown Ottawa</option>
+            <option>Glebe</option>
+            <option>Kanata</option>
+            <option>Nepean</option>
+            <option>Orleans</option>
+            <option>Sandy Hill</option>
+            <option>South Keys</option>
+            <option>Westboro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Age Group</label>
+          <select class="form-select">
+            <option>Infants (0-18 months)</option>
+            <option>Toddlers (18 months - 3 years)</option>
+            <option>Preschoolers (3-5 years)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Budget (CAD/month)</label>
+          <input type="range" min="500" max="1500" value="1000" class="range-slider">
+          <div class="slider-values">
+            <span>$500</span>
+            <span>$1000</span>
+            <span>$1500</span>
+          </div>
+        </div>
+        <button class="button">Apply Filters</button>
+      </div>
+      
+      <div class="property-card">
+        <img src="https://d1b6t1rkd36yrd.cloudfront.net/assets/images/daycare/placeholders/cover_51.jpeg" alt="Sochu_daycare1" class="property-image">
+        <div class="property-details">
+          <div class="property-title">Sochu Daycare</div>
+          <div class="property-address">2207 N07-B1.2</div>
+          <div class="property-price">$500/month</div>
+        </div>
+      </div>
+  
+      <div class="property-card">
+        <img src="https://static.kiddihub.com/1/truong-mam-non-be-tai-nang-ii-thuong-thanh-y14FfJFmLGln5s1Z.png" alt="Daycare Center 1" class="property-image">
+        <div class="property-details">
+          <div class="property-title">Little Stars Daycare</div>
+          <div class="property-address">123 Main Street, Kanata</div>
+          <div class="property-price">$1,200/month</div>
+        </div>
+      </div>
+  
+      <div class="property-card">
+        <img src="https://shrmsk.com/app/uploads/2023/12/service-daycare_resized_791e495609b7f1975d709f5398e39df85b1a13cc.jpg" alt="Daycare Center 2" class="property-image">
+        <div class="property-details">
+          <div class="property-title">Happy Kids Academy</div>
+          <div class="property-address">456 Elm Street, Nepean</div>
+          <div class="property-price">$1,000/month</div>
+        </div>
+      </div>
+  
+      <div class="property-card">
+        <img src="https://angelictreasuresdaycare.com/wp-content/uploads/2023/06/AdobeStock_238350472-scaled.jpeg.webp" alt="Daycare Center 3" class="property-image">
+        <div class="property-details">
+          <div class="property-title">Bright Futures Preschool</div>
+          <div class="property-address">789 Pine Avenue, Orleans</div>
+          <div class="property-price">$1,500/month</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Chat button -->
+    <div class="chat-button" id="chatButton3">💬</div>
+    
+    <div class="nav-bar">
+      <div class="nav-item" onclick="activateNavItem(this, 'dashboardScreen')">
+        <div class="nav-icon">🏠</div>
+        <div>Home</div>
+      </div>
+      <div class="nav-item" onclick="activateNavItem(this, 'dashboardScreen')">
+        <div class="nav-icon">📋</div>
+        <div>Plan</div>
+      </div>
+      <div class="nav-item active" onclick="activateNavItem(this, null)">
+        <div class="nav-icon">🔍</div>
+        <div>Explore</div>
+      </div>
+      <div class="nav-item" onclick="activateNavItem(this, 'chatbotScreen')">
+        <div class="nav-icon">🤖</div>
+        <div>Chatbot</div>
+      </div>
+      <div class="nav-item" onclick="activateNavItem(this, 'personalInfoScreen')">
+        <div class="nav-icon">👤</div>
+        <div>Profile</div>
+      </div>
+    </div>
+  </div>
+      
+  <!-- Chatbot Screen -->
+  <div class="screen" id="chatbotScreen">
+    <div class="header">
+      <button class="back-button" onclick="showScreen('dashboardScreen')">←</button>
+      <div class="header-title">Chatbot</div>
+      <span>🤖</span>
+    </div>
+    <div class="content">
+      <div class="chat-container">
+        <div class="chat-list">
+          <div class="chat-item">
+            <div class="chat-title">Welcome to Ottawa Helper!</div>
+            <div class="chat-description">How can I assist you today?</div>
+          </div>
+          <div class="chat-item">
+            <div class="chat-title">You</div>
+            <div class="chat-description">I need help finding affordable housing near Carleton University</div>
+          </div>
+          <div class="chat-item">
+            <div class="chat-title">Ottawa Helper</div>
+            <div class="chat-description">I can help with that! Sandy Hill and South Keys are popular areas for students. The average rent for a 1-bedroom apartment near Carleton is $1,200-1,500/month. Would you like me to show you some listings?</div>
+          </div>
+        </div>
+      </div>
+        
+    <div class="nav-bar">
+      <div class="nav-item" onclick="activateNavItem(this, 'dashboardScreen')">
+        <div class="nav-icon">🏠</div>
+        <div>Home</div>
+      </div>
+      <div class="nav-item" onclick="activateNavItem(this, 'dashboardScreen')">
+        <div class="nav-icon">📋</div>
+        <div>Plan</div>
+      </div>
+      <div class="nav-item" onclick="activateNavItem(this, null)">
+        <div class="nav-icon">🔍</div>
+        <div>Explore</div>
+      </div>
+      <div class="nav-item active" onclick="activateNavItem(this, 'chatbotScreen')">
+        <div class="nav-icon">🤖</div>
+        <div>Chatbot</div>
+      </div>
+      <div class="nav-item" onclick="activateNavItem(this, 'personalInfoScreen')">
+        <div class="nav-icon">👤</div>
+        <div>Profile</div>
+      </div>
+    </div>
+  </div>
+        
+  <script>
+    // Show splash screen then fade to welcome screen
+    setTimeout(function() {
+      document.getElementById('splashScreen').style.opacity = '0';
+      setTimeout(function() {
+        document.getElementById('splashScreen').style.display = 'none';
+        showScreen('welcomeScreen');
+      }, 500);
+    }, 2000);
+    
+    // Function to show a specific screen
+    function showScreen(screenId) {
+      console.log(`Attempting to show screen: ${screenId}`); // Debugging
+    
+      // Hide all screens
+      const screens = document.getElementsByClassName('screen');
+      for (let i = 0; i < screens.length; i++) {
+        screens[i].style.display = 'none';
+      }
+      
+      // Show the requested screen
+      document.getElementById(screenId).style.display = 'block';
+      
+      // Update nav items if applicable
+      if (screenId === 'dashboardScreen') {
+        updateNavItems(0);
+      } else if (screenId === 'housingScreen' || screenId === 'daycareScreen') {
+        updateNavItems(2);
+      } else if (screenId === 'chatbotScreen') {
+        updateNavItems(3);
+      } else if (screenId === 'personalInfoScreen') {
+        updateNavItems(4);
+      }
+    }
+    
+    // Update navigation items active state
+    function updateNavItems(activeIndex) {
+      const navItems = document.querySelectorAll('.nav-bar .nav-item');
+      
+      navItems.forEach((item, index) => {
+        if (index === activeIndex) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
+    
+    // Function to activate nav item
+    function activateNavItem(element, screenId) {
+      const navItems = document.querySelectorAll('.nav-bar .nav-item');
+      navItems.forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      element.classList.add('active');
+      
+      if (screenId) {
+        showScreen(screenId);
+      }
+    }
+  </script>
